@@ -49,7 +49,8 @@ def build_model():
     keras.layers.Dense(1)
   	])
 
-	optimizer = tf.train.RMSPropOptimizer(0.001)
+	#optimizer = tf.train.RMSPropOptimizer(0.001)
+	optimizer = tf.train.AdamOptimizer()
 
 	model.compile(loss='mse',
                 optimizer=optimizer,
