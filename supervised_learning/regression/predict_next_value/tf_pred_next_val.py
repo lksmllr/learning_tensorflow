@@ -43,7 +43,7 @@ print(train_labels[0])
 # build model
 def build_model():
 	model = keras.Sequential([
-    keras.layers.Dense(5, activation=tf.nn.relu,
+    keras.layers.Dense(2, activation=tf.nn.relu,
                        input_shape=(train_data.shape[1],)),
     #keras.layers.Dense(128, activation=tf.nn.relu),
     keras.layers.Dense(1)
@@ -70,7 +70,7 @@ class PrintDot(keras.callbacks.Callback):
     if epoch % 100 == 0: print('')
     print('.', end='')
 
-EPOCHS = 500
+EPOCHS = 1000
 
 # The patience parameter is the amount of epochs to check for improvement
 early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)
