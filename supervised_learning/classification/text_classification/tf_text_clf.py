@@ -105,7 +105,7 @@ history = model.fit(partial_x_train,
 # Evaluate the model
 results = model.evaluate(test_data, test_labels)
 
-print("Loss: " + str(results[0] + ", Acc: " + str(results[1])))
+print("Loss: " + str(results[0]) + ", Acc: " + str(results[1]))
 
 print("pred: " + str(np.argmax(model.predict(test_data[0]))))
 
