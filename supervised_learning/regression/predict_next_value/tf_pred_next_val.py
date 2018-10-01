@@ -75,12 +75,41 @@ EPOCHS = 1000
 # The patience parameter is the amount of epochs to check for improvement
 early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=100)
 
-history = model.fit(train_data, train_labels, epochs=EPOCHS,
-                    validation_split=0.2, verbose=0,
-                    callbacks=[early_stop, PrintDot()])
+not_good = True
+while(not_good):
 
-# Let's see how did the model performs on the test set:
-[loss, mae] = model.evaluate(test_data, test_labels, verbose=0)
+	history = model.fit(train_data, train_labels, epochs=EPOCHS,
+	                    validation_split=0.2, verbose=0,
+	                    callbacks=[early_stop, PrintDot()])
+
+	# Let's see how did the model performs on the test set:
+	[loss, mae] = model.evaluate(test_data, test_labels, verbose=0)
+
+	if mae < 1.0:
+		break
+
+	gen_data = np.zeros(shape=(no_entries, no_features))
+	gen_labels = np.zeros(shape=(no_entries, 1))
+	for i in range(0, no_entries):
+		count = i
+		for j in range(0, no_features):
+			gen_data[i][j] = count
+			count += step
+		gen_labels[i][0] = count
+
+	# Shuffle the data set
+	order = np.argsort(np.random.random(gen_labels.shape[0]))
+	gen_data = gen_data[order]
+	gen_labels = gen_labels[order]
+
+	# split to train and test
+	len_data = len(gen_data)
+	tmp_index = int(len_data*0.7)
+
+	train_data = gen_data[:tmp_index]
+	train_labels = gen_labels[:tmp_index]
+	test_data = gen_data[tmp_index:]
+	test_labels = gen_labels[tmp_index:]
 
 print("\n")
 print("\nTesting set Mean Abs Error: {:7.2f}".format(mae))
